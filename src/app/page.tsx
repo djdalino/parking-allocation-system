@@ -84,13 +84,12 @@ export default function Home() {
 const handleFormatDate = (date:any) => {
   if(date === undefined || date === '') return ''
   const day = date?.getDate();
-  const month = date?.getMonth() + 1; // Month indexes are 0-based
+  const month = date?.getMonth() + 1; 
   const year = date?.getFullYear();
   const hours = date?.getHours();
   const minutes = date?.getMinutes();
   const seconds = date?.getSeconds();
 
-  // Pad single digit values with a leading zero
   const pad = (value:any) => {
     return value < 10 ? '0' + value : value;
   };
