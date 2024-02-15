@@ -102,7 +102,7 @@ const handleFormatDate = (date:any) => {
     const parkingRatePerSize = PARKING_RATE[rateIndex]
     setAvailableSlot(availableSlot.map((slot: any, i: number) => slot.size === rateIndex && slot.id === index ? {...slot, isAvailable: false, vehicleType: VEHICHLE_TYPE[vehicleType], entryTime: ''} : slot))
     const findPark = parkedVehicle.find((park: any, i: number) => park.id === index)
-    const getParkedTime = Math.ceil((dateToday - findPark?.entryTime) / (1000*60*60)) 
+    const getParkedTime = Math.round((dateToday - findPark?.entryTime) / (1000*60*60)) 
 
     if(getParkedTime > FLAT_HOUR){
       setParkingFee(parkingRatePerSize * getParkedTime)
