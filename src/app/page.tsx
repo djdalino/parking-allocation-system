@@ -56,10 +56,10 @@ export default function Home() {
 
   const handleParkedVehicle = () => {
     const currentDate = new Date();
-    const dateOffset = (7*60*60*1000) * 1;
+    // const dateOffset = (24*60*60*1000) * 1;
    
-    currentDate.setTime(currentDate.getTime() - dateOffset);
-    console.log({currentDate})
+    // currentDate.setTime(currentDate.getTime() - dateOffset);
+    // console.log({currentDate})
     const findSlot = handleParkedOnAvailableSlot(vehicleType)
     if(findSlot === null){
       alert('Slot is taken')
@@ -67,7 +67,7 @@ export default function Home() {
     }
     setParkedVehicle([...parkedVehicle, {id: findSlot.slot.id ,vehicelSize: VEHICHLE_TYPE[vehicleType], parkingSlot: findSlot.slot.size, entryTime: currentDate }])
     setAvailableSlot(
-      availableSlot.map((slot: any, index: number) => slot.size === findSlot.slot.size && index === findSlot.index ? {...slot, isAvailable: true, vehicleType: VEHICHLE_TYPE[vehicleType],  entryTime: currentDate} : slot))
+      availableSlot.map((slot: any, index: number) => slot.size === findSlot.slot.size && index === findSlot.index ? {...slot, isAvailable: true, vehicleType: VEHICHLE_TYPE[vehicleType], entryTime: currentDate} : slot))
     setParkingFee(0)
   }
 
@@ -81,12 +81,27 @@ export default function Home() {
     return null
   }
 
+const handleFormatDate = (date:any) => {
+  if(date === undefined || date === '') return ''
+  const day = date?.getDate();
+  const month = date?.getMonth() + 1; // Month indexes are 0-based
+  const year = date?.getFullYear();
+  const hours = date?.getHours();
+  const minutes = date?.getMinutes();
+  const seconds = date?.getSeconds();
 
+  // Pad single digit values with a leading zero
+  const pad = (value:any) => {
+    return value < 10 ? '0' + value : value;
+  };
+
+  return `${pad(month)}/${pad(day)}/${year} ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+};
 
   const handleUnparkedVehicle = (rateIndex: number, index: number) => {
     const dateToday: any = new Date()
     const parkingRatePerSize = PARKING_RATE[rateIndex]
-    setAvailableSlot(availableSlot.map((slot: any, i: number) => slot.size === rateIndex && slot.id === index ? {...slot, isAvailable: false, vehicleType: VEHICHLE_TYPE[vehicleType]} : slot))
+    setAvailableSlot(availableSlot.map((slot: any, i: number) => slot.size === rateIndex && slot.id === index ? {...slot, isAvailable: false, vehicleType: VEHICHLE_TYPE[vehicleType], entryTime: ''} : slot))
     const findPark = parkedVehicle.find((park: any, i: number) => park.id === index)
     const getParkedTime = Math.ceil((dateToday - findPark?.entryTime) / (1000*60*60)) 
 
@@ -112,15 +127,23 @@ export default function Home() {
       <div className="text-center">
 
         <div>
-          <p className='text-3xl font-bold mb-10'>Parking Allocation System</p>
+          <p className='text-3xl font-bold'>Parking Allocation System</p>
+
+          <p className='mb-4'>Flat rate of 40 pesos for the first three (3) hours</p>
+          <div className='mb-4'>
+            <p> - 20/hour for vehicles parked in SP;</p>
+            <p>- 60/hour for vehicles parked in MP; and</p>
+            <p>- 100/hour for vehicles parked in LP </p>
+          </div>
+          
           <p className='text-3xl font-bold mb-1'>Available Slot</p>
-          <div className='flex mb-5'>
+          <div className='flex flex-col mb-5 md:flex-row  items-center'>
             {availableSlot.sort((a: any,b: any) => a.size - b.size).map((slot: any, index: number) => {
               return (
-                <div key={`${slot.size}-${index}`} className='py-2 px-3' >
+                <div key={`${slot.size}-${index}`} className='py-2 px-3 mx-2 max-w-full w-[250px] md:mb-0 mb-5' >
                   <p className='pill'>{slot.name}</p>
                   <p>{slot.isAvailable ? 'Taken' : 'Available'} {slot.isAvailable ? slot.vehicleType : ''}</p>
-                  <p>Time: </p>
+                  <p>Time: {handleFormatDate(slot?.entryTime)}</p>
                   <p>
                       <button 
                       className={`${!slot.isAvailable ? 'bg-gray-500' : 'bg-red-500'} py-2 px-4 rounded-md text-white`} 
@@ -136,10 +159,10 @@ export default function Home() {
           </div>
         </div>
 
-        <p>Parking Fee: {parkingFee?.toString()}</p>
+        <p className='text-xl mb-5'>Parking Fee: {parkingFee?.toString()}</p>
         <div>
           <label>Select Vehicle Type:</label>
-          <select className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 mx-auto p-2.5 dark:bg-gray-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={vehicleType} onChange={(e) => setVehicleType(parseInt(e.target.value))}>
+          <select className='text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[200px] mx-auto p-2.5 dark:bg-gray-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={vehicleType} onChange={(e) => setVehicleType(parseInt(e.target.value))}>
           <option selected>Choose a Car type</option>
             <option value={0}>Small</option>
             <option value={1}>Medium</option>
@@ -149,7 +172,7 @@ export default function Home() {
           
         </div>
         <div className='flex gap-2 mx-auto items-center justify-center mt-5'>
-          <button className='bg-blue-500 py-2 px-4 w-1/3 rounded-md text-white' onClick={handleParkedVehicle}>Park Vehicle</button>
+          <button className='bg-blue-500 py-2 px-4 w-[200px] rounded-md text-white' onClick={handleParkedVehicle}>Park Vehicle</button>
         </div>
         
       </div>
