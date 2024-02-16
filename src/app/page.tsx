@@ -154,7 +154,7 @@ const handleFormatDate = (date:any) => {
               return (
                 <div key={`${slot.size}-${index}`} className='py-2 px-3 mx-2 max-w-full w-[250px] md:mb-0 mb-5' >
                   <p className='pill'>{slot.name}</p>
-                  <p>{slot.isAvailable ? 'Taken' : 'Available'} {slot.isAvailable ? slot.vehicleType : ''}</p>
+                  <p>{slot.isAvailable ? 'Occupied' : 'Available'} {slot.isAvailable ? slot.vehicleType : ''}</p>
                   <p>Time: {handleFormatDate(slot?.entryTime)}</p>
                   <p>
                       <button 
