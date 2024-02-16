@@ -53,13 +53,10 @@ const AVAILABLE_PARKING = [
   },
 ]
 
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 
 export default function Home() {
-  const [dateValue, setDateValue] = React.useState<Value>(new Date());
+  const [dateValue, setDateValue] = React.useState<any>(new Date());
   const [timeValue, setTimeValue] = React.useState<any>(new Date())
   const [hour, setHour] = React.useState<any>('10')
   const [minute, setMinute] = React.useState<any>('00')
@@ -69,7 +66,7 @@ export default function Home() {
   const [availableSlot, setAvailableSlot] = React.useState<any>(AVAILABLE_PARKING)
 
   const handleParkedVehicle = () => {
-    const currentDate = new Date(dateValue);
+    const currentDate = dateValue ? new Date(dateValue) : new Date();
   
     currentDate.setHours(!hour ? currentDate.getHours() : parseInt(hour))
     currentDate.setMinutes(!minute ? currentDate.getMinutes() : parseInt(minute))
