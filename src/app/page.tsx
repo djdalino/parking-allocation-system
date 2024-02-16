@@ -56,10 +56,10 @@ export default function Home() {
 
   const handleParkedVehicle = () => {
     const currentDate = new Date();
-    // const dateOffset = (24*60*60*1000) * 1;
+    const dateOffset = (25*60*60*1000) * 1;
    
-    // currentDate.setTime(currentDate.getTime() - dateOffset);
-    // console.log({currentDate})
+    currentDate.setTime(currentDate.getTime() - dateOffset);
+    console.log({currentDate})
     const findSlot = handleParkedOnAvailableSlot(vehicleType)
     if(findSlot === null){
       alert('Slot is taken')
@@ -144,7 +144,7 @@ const handleFormatDate = (date:any) => {
               <option value={2}>Large</option>
             </select>
           </div>
-          <div className='flex gap-2 mx-auto items-center justify-center mt-5'>
+          <div className='flex gap-2 mx-auto items-center justify-center mb-5 mt-2'>
             <button className='bg-blue-500 py-2 px-4 w-[200px] rounded-md text-white' onClick={handleParkedVehicle}>Park Vehicle</button>
           </div>
           
@@ -162,7 +162,7 @@ const handleFormatDate = (date:any) => {
                       onClick={() => handleUnparkedVehicle(slot.size, slot.id)}
                       disabled={!slot.isAvailable}
                       >
-                        Unpark Vehicle
+                        {!slot.isAvailable ? 'Parking Space' : 'Unpark Vehicle'}
                       </button>
                     </p>
                 </div>
