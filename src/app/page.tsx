@@ -62,7 +62,7 @@ export default function Home() {
     // console.log({currentDate})
     const findSlot = handleParkedOnAvailableSlot(vehicleType)
     if(findSlot === null){
-      alert('Slot is taken')
+      alert('Slot is occupied')
       return;
     }
     setParkedVehicle([...parkedVehicle, {id: findSlot.slot.id ,vehicelSize: VEHICHLE_TYPE[vehicleType], parkingSlot: findSlot.slot.size, entryTime: currentDate }])
@@ -121,6 +121,15 @@ const handleFormatDate = (date:any) => {
     setParkedVehicle(parkedVehicle.filter((parked: any, i: number) => parked.id != index))
   }
 
+  const handleParkingSpaceFull = () => {
+    
+    const isFull = availableSlot.every((slot: any) => slot.isAvailable === true)
+    console.log({isFull})
+    return isFull;
+  }
+
+
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-2">
       <div className="text-center">
@@ -145,7 +154,7 @@ const handleFormatDate = (date:any) => {
             </select>
           </div>
           <div className='flex gap-2 mx-auto items-center justify-center mb-5 mt-2'>
-            <button className='bg-blue-500 py-2 px-4 w-[200px] rounded-md text-white' onClick={handleParkedVehicle}>Park Vehicle</button>
+            <button disabled={handleParkingSpaceFull()} className={`${handleParkingSpaceFull() === true? 'bg-gray-500' : 'bg-blue-500'} py-2 px-4 w-[200px] rounded-md text-white`} onClick={handleParkedVehicle}> {handleParkingSpaceFull() === false ? 'Park Vehicle' : 'No Available Space'}</button>
           </div>
           
           <p className='text-3xl font-bold mb-1'>Available Slot</p>
