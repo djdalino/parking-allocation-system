@@ -1,6 +1,12 @@
 'use client'
 import { get } from 'http';
 import * as React from 'react'
+import Calendar from 'react-calendar';
+import TimePicker from 'react-time-picker';
+import 'react-time-picker/dist/TimePicker.css';
+import 'react-clock/dist/Clock.css';
+import 'react-calendar/dist/Calendar.css';
+import { split } from 'postcss/lib/list';
 
 
 const VEHICHLE_TYPE = ['S', 'M', 'L'];
@@ -47,18 +53,26 @@ const AVAILABLE_PARKING = [
   },
 ]
 
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 
 export default function Home() {
+  const [dateValue, setDateValue] = React.useState<Value>(new Date());
+  const [timeValue, setTimeValue] = React.useState<any>(new Date())
+  const [hour, setHour] = React.useState<any>('10')
+  const [minute, setMinute] = React.useState<any>('00')
   const [parkedVehicle, setParkedVehicle] = React.useState<any>([])
   const [vehicleType, setVehicleType] = React.useState<number>(0)
   const [parkingFee, setParkingFee] = React.useState<number>(0)
   const [availableSlot, setAvailableSlot] = React.useState<any>(AVAILABLE_PARKING)
 
   const handleParkedVehicle = () => {
-    const currentDate = new Date();
-    // const dateOffset = (25*60*60*1000) * 1;
-   
-    // currentDate.setTime(currentDate.getTime() - dateOffset);
+    const currentDate = new Date(dateValue);
+  
+    currentDate.setHours(!hour ? currentDate.getHours() : parseInt(hour))
+    currentDate.setMinutes(!minute ? currentDate.getMinutes() : parseInt(minute))
     // console.log({currentDate})
     const findSlot = handleParkedOnAvailableSlot(vehicleType)
     if(findSlot === null){
@@ -98,6 +112,7 @@ const handleFormatDate = (date:any) => {
 };
 
   const handleUnparkedVehicle = (rateIndex: number, index: number) => {
+    
     const dateToday: any = new Date()
     const parkingRatePerSize = PARKING_RATE[rateIndex]
     setAvailableSlot(availableSlot.map((slot: any, i: number) => slot.size === rateIndex && slot.id === index ? {...slot, isAvailable: false, vehicleType: VEHICHLE_TYPE[vehicleType], entryTime: ''} : slot))
@@ -128,7 +143,14 @@ const handleFormatDate = (date:any) => {
     return isFull;
   }
 
-
+ 
+  React.useEffect(() => {
+    (() => {
+      const currentDate = new Date();
+      setHour(currentDate.getHours().toString())
+      setMinute(currentDate.getMinutes().toString())
+    })()
+  }, [])
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-2">
@@ -145,6 +167,15 @@ const handleFormatDate = (date:any) => {
           </div>
 
           <div>
+            <div className='mx-auto w-[300px]'>
+             <Calendar onChange={setDateValue} value={dateValue} />
+            </div>
+            <div className='mx-auto w-[300px] flex items-center justify-center py-2'>
+              <input className='w-[55px] mx-2 px-2' type ='number' max='24' maxLength={2} value={hour} onChange={(e) => setHour(parseInt(e.target.value) > 24 ? 24 : e.target.value)}/> 
+              :
+              <input className='w-[55px] mx-2 px-2' type ='number' max='60' maxLength={2} value={minute} onChange={(e) => setMinute(parseInt(e.target.value) > 60 ? '' : e.target.value)}/>
+              
+            </div>
             <label>Select Vehicle Type:</label>
             <select className='text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[200px] mx-auto p-2.5 dark:bg-gray-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={vehicleType} onChange={(e) => setVehicleType(parseInt(e.target.value))}>
             <option selected>Choose a Car type</option>
