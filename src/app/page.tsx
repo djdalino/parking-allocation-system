@@ -165,7 +165,7 @@ const handleFormatDate = (date:any) => {
 
           <div>
             <div className='mx-auto w-[300px]'>
-             <Calendar onChange={setDateValue} value={dateValue} />
+             <Calendar className='text-blue-500' onChange={setDateValue} value={dateValue} />
             </div>
             <div className='mx-auto w-[300px] flex items-center justify-center py-2'>
               <input className='w-[55px] mx-2 px-2' type ='number' max='24' maxLength={2} value={hour} onChange={(e) => setHour(parseInt(e.target.value) > 24 ? 24 : e.target.value)}/> 
