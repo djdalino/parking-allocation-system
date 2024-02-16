@@ -56,10 +56,10 @@ export default function Home() {
 
   const handleParkedVehicle = () => {
     const currentDate = new Date();
-    const dateOffset = (25*60*60*1000) * 1;
+    // const dateOffset = (25*60*60*1000) * 1;
    
-    currentDate.setTime(currentDate.getTime() - dateOffset);
-    console.log({currentDate})
+    // currentDate.setTime(currentDate.getTime() - dateOffset);
+    // console.log({currentDate})
     const findSlot = handleParkedOnAvailableSlot(vehicleType)
     if(findSlot === null){
       alert('Slot is taken')
