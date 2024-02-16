@@ -130,9 +130,22 @@ const handleFormatDate = (date:any) => {
 
           <p className='mb-4'>Flat rate of 40 pesos for the first three (3) hours</p>
           <div className='mb-4'>
-            <p> - 20/hour for vehicles parked in SP;</p>
+            <p>- 20/hour for vehicles parked in SP;</p>
             <p>- 60/hour for vehicles parked in MP; and</p>
             <p>- 100/hour for vehicles parked in LP </p>
+          </div>
+
+          <div>
+            <label>Select Vehicle Type:</label>
+            <select className='text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[200px] mx-auto p-2.5 dark:bg-gray-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={vehicleType} onChange={(e) => setVehicleType(parseInt(e.target.value))}>
+            <option selected>Choose a Car type</option>
+              <option value={0}>Small</option>
+              <option value={1}>Medium</option>
+              <option value={2}>Large</option>
+            </select>
+          </div>
+          <div className='flex gap-2 mx-auto items-center justify-center mt-5'>
+            <button className='bg-blue-500 py-2 px-4 w-[200px] rounded-md text-white' onClick={handleParkedVehicle}>Park Vehicle</button>
           </div>
           
           <p className='text-3xl font-bold mb-1'>Available Slot</p>
@@ -159,20 +172,8 @@ const handleFormatDate = (date:any) => {
         </div>
 
         <p className='text-xl mb-5'>Parking Fee: {parkingFee?.toString()}</p>
-        <div>
-          <label>Select Vehicle Type:</label>
-          <select className='text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[200px] mx-auto p-2.5 dark:bg-gray-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={vehicleType} onChange={(e) => setVehicleType(parseInt(e.target.value))}>
-          <option selected>Choose a Car type</option>
-            <option value={0}>Small</option>
-            <option value={1}>Medium</option>
-            <option value={2}>Large</option>
-          </select>
-
-          
-        </div>
-        <div className='flex gap-2 mx-auto items-center justify-center mt-5'>
-          <button className='bg-blue-500 py-2 px-4 w-[200px] rounded-md text-white' onClick={handleParkedVehicle}>Park Vehicle</button>
-        </div>
+       
+       
         
       </div>
     </main>
