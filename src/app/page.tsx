@@ -170,12 +170,11 @@ const handleFormatDate = (date:any) => {
             <div className='mx-auto w-[300px] flex items-center justify-center py-2'>
               <input className='w-[55px] mx-2 px-2' type ='number' max='24' maxLength={2} value={hour} onChange={(e) => setHour(parseInt(e.target.value) > 24 ? 24 : e.target.value)}/> 
               :
-              <input className='w-[55px] mx-2 px-2' type ='number' max='60' maxLength={2} value={minute} onChange={(e) => setMinute(parseInt(e.target.value) > 60 ? '' : e.target.value)}/>
+              <input className='w-[55px] mx-2 px-2' type ='number' max='60' maxLength={2} value={minute} onChange={(e) => setMinute(parseInt(e.target.value) > 60 ? 0 : e.target.value)}/>
               
             </div>
             <label>Select Vehicle Type:</label>
             <select className='text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[200px] mx-auto p-2.5 dark:bg-gray-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={vehicleType} onChange={(e) => setVehicleType(parseInt(e.target.value))}>
-            <option selected>Choose a Car type</option>
               <option value={0}>Small</option>
               <option value={1}>Medium</option>
               <option value={2}>Large</option>
