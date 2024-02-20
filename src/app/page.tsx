@@ -121,7 +121,7 @@ const handleFormatDate = (date:any) => {
     } else {
       setParkingFee(FLAT_RATE)
     }
-    if(getParkedTime > EXCEED_HOUR){
+    if(getParkedTime >= EXCEED_HOUR){
       const getDays = Math.floor(getParkedTime/EXCEED_HOUR)
       const excessHour = Math.round(getParkedTime % EXCEED_HOUR)
       const computeExceed = (EXCEED_RATE * getDays) + (parkingRatePerSize * excessHour)
@@ -186,7 +186,7 @@ const handleFormatDate = (date:any) => {
           </div>
           
           <p className='text-3xl font-bold mb-1'>Available Slot</p>
-          <div className='flex flex-col mb-5 md:flex-row  items-center'>
+          <div className='flex flex-col mb-5 md:flex-row md:container items-center'>
             {availableSlot.sort((a: any,b: any) => a.size - b.size).map((slot: any, index: number) => {
               return (
                 <div key={`${slot.size}-${index}`} className='py-2 px-3 mx-2 max-w-full w-[250px] md:mb-0 mb-5' >
